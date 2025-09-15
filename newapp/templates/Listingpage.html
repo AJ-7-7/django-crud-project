@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load humanize %}
+
+    <meta charset="UTF-8">
+    <title>Employee Records</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS to remove border outline */
+        .custom-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            border: none;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .custom-table th {
+            background-color: #6f42c1; /* Deep purple background */
+            color: white;
+        }
+
+        .custom-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        .jumbotron-purple {
+            background-color: #6f42c1; /* Deep purple background */
+            color: white;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid my-5">
+    <div class="row">
+        {% include 'menu.html' %}
+
+        <div class="col-md-9">
+            <div class="jumbotron jumbotron-fluid jumbotron-purple">
+                <div class="container">
+                    <h1 class="display-4">Employee Records</h1>
+                    <p class="lead" id="greeting-message"></p>
+                    <a href="/add/" class="btn btn-primary btn-lg">Add Employee</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <table class="custom-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Birthdate</th>
+                            <th>Salary</th>
+                            <th>Job</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for rec in records %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ rec.fullname }}</td>
+                            <td>{{ rec.birthdate|date:"M d, Y" }}</td>
+                            <td>SAR {{ rec.salary|intcomma }}</td>
+                            <td>{{ rec.jobid.descen }}  |  {{ rec.jobid.descar}}</td>
+                            <td>
+                                <a href="/edit/{{ rec.id }}" class="btn btn-success">Edit</a>
+                                <a href="/delete/{{ rec.id }}" class="btn btn-danger">Delete</a>
+                                <a href="/view/{{ rec.id }}" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to determine greeting based on current time
+    var greetingMessage = document.getElementById('greeting-message');
+    var currentTime = new Date().getHours();
+
+    if (currentTime >= 5 && currentTime < 12) {
+        greetingMessage.innerHTML = 'Good morning!';
+    } else if (currentTime >= 12 && currentTime < 17) {
+        greetingMessage.innerHTML = 'Good afternoon!';
+    } else {
+        greetingMessage.innerHTML = 'Good evening!';
+    }
+</script>
+
+</body>
+
+</html>

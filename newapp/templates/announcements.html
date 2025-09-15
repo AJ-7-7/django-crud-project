@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcements</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css"> 
+    <style>
+        .jumbotron-purple {
+            background-color: #6f42c1; /* Deep purple background */
+            color: white;
+            padding: 2rem 0;
+        }
+        .response-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            border-radius: .25rem;
+            overflow: auto;
+            /* Adjust width to fit content */
+            width: 100%; /* Adjust as needed */
+            /* Ensure box expands to fit content */
+            min-height: 200px; /* Adjust height as needed */
+        }
+        .response-box pre {
+            margin: 0;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: .25rem;
+            /* Ensure pre element fits within box */
+            max-width: 100%;
+            /* Allow scrolling if content overflows */
+            overflow-x: auto;
+            white-space: pre-wrap; /* Preserve formatting */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid my-5">
+        <div class="row">
+            {% include 'menu.html' %}
+            <div class="col-md-9">
+                <div class="jumbotron jumbotron-fluid jumbotron-purple">
+                    <div class="container">
+                        <h1 class="display-4">Announcements</h1>
+                    </div>
+                </div>
+                <table id="announcementTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>userId</th>
+                            <th>id</th>
+                            <th>title</th>
+                            <th>completed</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#announcementTable').DataTable({
+                serverSide: true,
+                processing: false,
+                paging: true,
+                searching: true,
+                ordering: true,
+                ajax: {
+                    url: 'https://announcementstest.sbg.com.sa/api/v1/Announcement/GetAllPagedList',
+                    
+                    dataSrc: function(json) {
+
+                        // Adjust the response format to match DataTables expectations
+                        json.recordsTotal = json.data.totalCount;
+                        json.recordsFiltered = json.data.totalCount;
+                        return json.data.items;
+                    },
+                    dataType: 'json',
+                    type: 'POST',  // Ensure this matches the request method expected by the API
+                    contentType: 'application/json',  // Set content type to JSON
+
+                    data: function(data) {
+                        // Extract sorting information
+                        var order = data.order[0]; // Get the first sorting order
+                        var column = data.columns[order.column].data; // Column name
+                        var columnIndex = data.order[0].column
+                        var direction = order.dir;
+                        
+                        // Construct sorting parameter
+                        sorting = `${column}-${direction}`;
+                        
+
+                        // Adjust the request payload to match API expectations
+                        return JSON.stringify({
+                            
+                            pageIndex: data.start / data.length,  // Calculate pageIndex
+                            pageSize: data.length,
+                            searchKey: data.search.value, // Use searchKey for the search term
+                            sorting: sorting, // Add sorting parameter
+
+                        });
+                    },
+                    error: function(xhr, error, thrown) {
+                        console.log('AJAX error:', error);
+                        console.log('Thrown error:', thrown);
+                    }
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'titleAr' },
+                    { data: 'titleEn' },
+                    { data: 'announcementDate' },
+                    { data: 'expiryDate'  },
+                    { data: 'priority' },
+                    { 
+                        data: 'isActive',
+                        render: function(data) {
+                            return data ? 'Yes' : 'No';
+                        }
+                    }
+                ],
+                pageLength: 5,  // Adjust as needed
+                lengthMenu: [5, 10, 15, 25, 50],  // Adjust page length options
+                language: {
+                    loadingRecords: 'Loading...',
+                    processing: 'Processing...'
+                }
+            });
+        });
+    </script>
+</body>
+</html>

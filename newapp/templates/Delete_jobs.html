@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title class="bg-info">Delete Job</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        .card {
+            background-color: #585858;
+            color: white;
+        }
+
+        .card-header {
+            background-color: #6f42c1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid my-5">
+        <div class="row">
+            {% include 'menu.html' %}
+
+            <div class="col-md-9">
+                <div class="card mx-auto w-50">
+                    <div class="card-header">
+                        <h1 class="card-title text-center">Delete Job</h1>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Are you sure you want to delete this job?</p>
+                        <p>Job: {{ job.descen }} | {{ job.descar }}</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="text-center">
+                                {% if job.employeedata_set.exists %}
+                                    <button type="button" class="btn btn-danger" disabled>Delete</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                {% endif %}
+                                <a href="{% url 'job_list' %}" class="btn btn-secondary ml-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                    {% if job.employeedata_set.exists %}
+                    <div class="card-footer text-muted text-center mt-3">
+                        <p class="text-danger">This job is assigned to one or more employees and cannot be deleted.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (if not already included) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

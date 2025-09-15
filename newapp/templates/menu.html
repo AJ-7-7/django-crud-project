@@ -1,0 +1,20 @@
+<div class="col-md-3">
+    <div class="list-group">
+        <a href="{% url 'employee_list' %}" class="list-group-item list-group-item-action{% if request.path == '/' %} active{% endif %}">Employees</a>
+        <a href="{% url 'job_list' %}" class="list-group-item list-group-item-action{% if request.path == '/jobs/' %} active{% endif %}">Jobs</a>
+        <a href="{% url 'get_announcements' %}" class="list-group-item list-group-item-action{% if request.path == '/api/announcements/' %} active{% endif %}">API</a>
+    </div>
+</div>
+
+<style>
+    .list-group-item {
+        background-color: #6f42c1 !important; /* Deep purple background */
+        color: white !important;
+    }
+
+    .list-group-item:hover,
+    .list-group-item.active {
+        background-color: #5a32a0 !important; /* Darker purple for hover and active state */
+        color: white !important;
+    }
+</style>

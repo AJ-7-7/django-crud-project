@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title class="bg-info">Edit Job</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        .card {
+            background-color: #585858;
+            color: white;
+        }
+
+        .card-header {
+            background-color: #6f42c1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid my-5">
+        <div class="row">
+            {% include 'menu.html' %}
+
+            <div class="col-md-9">
+                <div class="card mx-auto w-50">
+                    <div class="card-header">
+                        <h1 class="card-title text-center">Edit Job</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Update Job</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (if not already included) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
