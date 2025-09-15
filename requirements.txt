@@ -1,0 +1,5 @@
+pipDjango==5.1.4
+Django==5.0.2
+django_environ==0.12.0
+Requests==2.32.5
+mssql-django==1.6
