@@ -21,7 +21,6 @@ class EmployeeData(models.Model):
 
 class Jobs(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    descar = models.CharField(db_column='DescAr', max_length=50, db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase.
     descen = models.CharField(db_column='DescEn', max_length=50, db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

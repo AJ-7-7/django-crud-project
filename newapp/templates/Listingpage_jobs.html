@@ -71,7 +71,7 @@
                         {% for job in jobs %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ job.descen }} | {{ job.descar }}</td>
+                            <td>{{ job.descen }}</td>
                             <td>
                                 <a href="{% url 'edit_job' job.id %}" class="btn btn-success">Edit</a>
                                 {% if job.employeedata_set.exists %}
